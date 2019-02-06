@@ -6,18 +6,18 @@ from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
-class Recibo(object):
+class Receipt(object):
 
       def __init__(self, num_receipt, locality, amount, date_issue, maturity,
-                   description, payable, office, account_number, address,
-                   population, name_shipper):
+                   concept, payable, office, account_number, name_shipper, address,
+                   population):
 
             self.num_receipt = num_receipt
             self.locality = locality
             self.amount = amount
             self.date_issue = date_issue
             self.maturity = maturity
-            self.description = description
+            self.concept = concept
             self.payable = payable
             self.office = office
             self.account_number = account_number
@@ -28,12 +28,9 @@ class Recibo(object):
       def generate_pdf(self):
 
             locale.setlocale(locale.LC_ALL, '')
-            c = canvas.Canvas("Recibo.pdf", pagesize=A4)
+            c = canvas.Canvas("Recibo_" + str(self.num_receipt) + ".pdf", pagesize=A4)
             c.setLineWidth(.2)
             c.setFont('Helvetica', 9)
-
-            c = canvas.Canvas("Recibo.pdf")
-            c.setLineWidth(.2)
             c.rect(102.86, 771.026, 404.28, 56.904)
             c.line(102.86, 799.478, 507.14, 799.478)
             c.line(178.57, 827.93, 178.57, 799.478)
@@ -67,8 +64,29 @@ class Recibo(object):
             c.rect(102.86, 771.026, 404.28, 56.904)
             
             c.line(0, 603.165, 600, 603.165)
+
+            c.setFont('Helvetica', 9)
             
+            c.drawCentredString(140.428, 805.168, self.num_receipt)
+            c.drawCentredString(285.714, 805.168, self.locality)
+            c.drawCentredString(450.857, 805.168, self.amount)
+            
+            c.drawRightString(285.714, 776.72, self.date_issue)
+            c.drawRightString(471.428, 776.72, self.maturity)
+            
+            c.drawRightString(457.143, 729.77, self.concept)
+            
+            c.drawString(107.143, 688, self.payable)
+            c.drawRightString(314.285, 688, self.office)
+            c.drawRightString(458, 688, self.account_number)
+            
+            c.drawString(107.143, 648.68, self.name_shipper)
+            c.drawString(107.143, 634.46, self.address)
+            c.drawString(107.143, 620.545, self.population)
+
+            c.drawString(387.428, 640.46, "Andy Murray")
             c.save()
+
 
 
 

@@ -1,5 +1,7 @@
+
 from tkinter import *
-from Receipt import Receipt
+from receipt import Receipt
+from bill import Bill 
 
 class App(object):
 
@@ -7,7 +9,6 @@ class App(object):
         self.root = Tk()
         self.create_main_widgets()
         self.root.mainloop()
-
 
     def create_main_widgets(self):
         self.root.title("Bill - Generator")
@@ -47,7 +48,7 @@ class App(object):
         self.frame_info_bill = Frame(self.root)
         self.frame_info_bill.pack(fill="x")
         #self.frame_info_bill.config(bg="green", width="400", height="30")
-
+        
         self.label_num_bill = Label(self.frame_info_bill, text="Número factura")
         self.label_num_bill.grid(row=0, column=0)
         self.entry_num_bill = Entry(self.frame_info_bill)
@@ -55,12 +56,12 @@ class App(object):
         
         self.label_date = Label(self.frame_info_bill, text="Fecha")
         self.label_date.grid(row=0, column=2)
-        self.entry_date_day = Entry(self.frame_info_bill)
-        self.entry_date_day.grid(row=0, column=3)
-        self.entry_date_month = Entry(self.frame_info_bill)
-        self.entry_date_month.grid(row=0, column=4)
-        self.entry_date_year = Entry(self.frame_info_bill)
-        self.entry_date_year.grid(row=0, column=5)
+        self.entry_date_day_bill = Entry(self.frame_info_bill)
+        self.entry_date_day_bill.grid(row=0, column=3)
+        self.entry_date_month_bill = Entry(self.frame_info_bill)
+        self.entry_date_month_bill.grid(row=0, column=4)
+        self.entry_date_year_bill = Entry(self.frame_info_bill)
+        self.entry_date_year_bill.grid(row=0, column=5)
 
 
         
@@ -76,22 +77,35 @@ class App(object):
         self.label_address.grid(row=1, column=0)
         self.label_population = Label(self.frame_client, text="Población")
         self.label_population.grid(row=1, column=2)
+        self.label_postal_code = Label(self.frame_client, text="Código Postal")
+        self.label_postal_code.grid(row=2, column=0)
+        self.label_taxes = Label(self.frame_client, text="I.V.A")
+        self.label_taxes.grid(row=2, column=2)
+        self.label_way_to_pay = Label(self.frame_client, text="Modo de pago")
+        self.label_way_to_pay.grid(row=2, column=4)
         
-        self.entry_name = Entry(self.frame_client)
-        self.entry_name.grid(row=0, column=1)
-        self.entry_nif = Entry(self.frame_client)
-        self.entry_nif.grid(row=0, column=3)
-        self.entry_address = Entry(self.frame_client)
-        self.entry_address.grid(row=1, column=1)
-        self.entry_population = Entry(self.frame_client)
-        self.entry_population.grid(row=1, column=3)
-
+        
+        self.entry_name_bill = Entry(self.frame_client)
+        self.entry_name_bill.grid(row=0, column=1)
+        self.entry_nif_bill = Entry(self.frame_client)
+        self.entry_nif_bill.grid(row=0, column=3)
+        self.entry_address_bill = Entry(self.frame_client)
+        self.entry_address_bill.grid(row=1, column=1)
+        self.entry_population_bill = Entry(self.frame_client)
+        self.entry_population_bill.grid(row=1, column=3)
+        self.entry_postal_code_bill = Entry(self.frame_client)
+        self.entry_postal_code_bill.grid(row=2, column=1)
+        self.entry_taxes_bill = Entry(self.frame_client)
+        self.entry_taxes_bill.grid(row=2, column=3)
+        self.entry_way_to_pay_bill = Entry(self.frame_client)
+        self.entry_way_to_pay_bill.grid(row=2, column=5)
+        
         self.frame_description = Frame(self.root)
         self.frame_description.pack(fill="x")
         #self.frame_description.config(bg="yellow", width="400", height="1000")
-        for x in range(0,20):
+        for x in range(0,30):
             self.create_description(self.frame_description)
-        
+
         self.buton = Button(self.root, text="Generar Factura", command=self.generate_bill)
         self.buton.pack(side=RIGHT)
 
@@ -212,8 +226,26 @@ class App(object):
 
 
     def generate_bill(self):
-            pass
+        num_bill = self.entry_num_bill.get()
+        date_day_bill = self.entry_date_day_bill.get()
+        date_month_bill = self.entry_date_month_bill.get()
+        date_year_bill = self.entry_date_year_bill.get()
+        name_client_bill = self.entry_name_bill.get()
+        nif_bill = self.entry_nif_bill.get()
+        address_bill = self.entry_address_bill.get()
+        population_bill = self.entry_population_bill.get()
+        postal_code = self.entry_postal_code_bill.get()
+        taxes_bill = self.entry_taxes_bill.get()
+        way_to_pay_bill = self.entry_way_to_pay_bill.get()
+        
 
+        #Bill(name_client_bill, "", address_bill, population_bill, postal_code,
+        #     num_bill, date_day_bill, date_month_bill, date_year_bill, nif_bill, "diccionario o array", taxes_bill, way_to_pay_bill).generate_pdf()
+
+            
+
+            
+            
 
 if __name__ == "__main__":
 

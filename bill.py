@@ -6,7 +6,7 @@ from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
-class Factura(object):
+class Bill(object):
 
     def __init__(self, name, second_name, address, population, postal_code,
                  num_bill, day, month, year, cif, elementos, taxes, way_to_pay):

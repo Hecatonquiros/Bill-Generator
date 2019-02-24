@@ -103,16 +103,27 @@ class App(object):
         
         self.frame_description = Frame(self.root)
         self.frame_description.pack(fill="x")
-        #self.frame_description.config(bg="yellow", width="400", height="1000")
+
+        self.canvas = Canvas(self.frame_description)
+        frame = Frame(self.canvas)
+        myscrollbar=Scrollbar(self.root, orient="vertical", command=self.canvas.yview)
+        self.canvas.configure(yscrollcommand=myscrollbar.set)
+        myscrollbar.pack(side="right", fill="y")
+        self.canvas.pack(side="left")
+        self.canvas.create_window((0,0),window=frame, anchor='nw')
+        frame.bind("<Configure>", self.myfunction)
         self.list_concept_line = []
-        self.number_concepts = 35
+        self.number_concepts = 100
         for x in range(0,self.number_concepts):
             concept  = Concept_Line()
-            concept.create_widgets(self.frame_description)
+            concept.create_widgets(frame)
             self.list_concept_line.append(concept)
 
         self.buton = Button(self.root, text="Generar Factura", command=self.generate_bill)
         self.buton.pack(side=RIGHT)
+
+    def myfunction(self,event):
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"), width=1000, height=900)
 
     def create_receipt_widgets(self):
         self.label_num_receipt = Label(self.root, text="Recibo Numero")

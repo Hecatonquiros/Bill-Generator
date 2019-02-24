@@ -1,7 +1,8 @@
 
 from tkinter import *
 from receipt import Receipt
-from bill import Bill 
+from bill import Bill
+from concept_line import Concept_Line
 
 class App(object):
 
@@ -103,40 +104,15 @@ class App(object):
         self.frame_description = Frame(self.root)
         self.frame_description.pack(fill="x")
         #self.frame_description.config(bg="yellow", width="400", height="1000")
-        for x in range(0,30):
-            self.create_description(self.frame_description)
+        self.list_concept_line = []
+        self.number_concepts = 35
+        for x in range(0,self.number_concepts):
+            concept  = Concept_Line()
+            concept.create_widgets(self.frame_description)
+            self.list_concept_line.append(concept)
 
         self.buton = Button(self.root, text="Generar Factura", command=self.generate_bill)
         self.buton.pack(side=RIGHT)
-
-    def create_description(self, frame):
-        elementFrame = Frame(frame)
-        elementFrame.pack(fill = "both", expand = "True")
-
-        cuantLabel = Label(elementFrame, text = "Cantidad")
-        cuantLabel.grid(row = 0, column = 0, sticky = "e")
-
-        cuantEntry = Entry(elementFrame)
-        cuantEntry.grid(row=0, column = 1, sticky = "e")
-
-        descripLabel = Label(elementFrame, text = "Descripcion")
-        descripLabel.grid(row = 0, column = 2, sticky = "e")
-
-        descripEntry = Entry(elementFrame)
-        descripEntry.grid(row = 0, column = 3, sticky = "e")
-
-        priceLabel = Label(elementFrame, text = "Precio")
-        priceLabel.grid(row = 0, column = 4, sticky = "e")
-
-        priceEntry = Entry(elementFrame)
-        priceEntry.grid(row = 0, column = 5, sticky = "e")
-
-        importLabel = Label(elementFrame, text = "Importe")
-        importLabel.grid(row = 0, column = 6, sticky = "e")
-
-        importEntry = Entry(elementFrame)
-        importEntry.grid(row = 0, column = 7)
-
 
     def create_receipt_widgets(self):
         self.label_num_receipt = Label(self.root, text="Recibo Numero")
@@ -237,10 +213,17 @@ class App(object):
         postal_code = self.entry_postal_code_bill.get()
         taxes_bill = self.entry_taxes_bill.get()
         way_to_pay_bill = self.entry_way_to_pay_bill.get()
-        
 
-        #Bill(name_client_bill, "", address_bill, population_bill, postal_code,
-        #     num_bill, date_day_bill, date_month_bill, date_year_bill, nif_bill, "diccionario o array", taxes_bill, way_to_pay_bill).generate_pdf()
+        for i in range(0, self.number_concepts):
+            self.list_concept_line[i].set_cuantity(self.list_concept_line[i].get_cuantity())
+            self.list_concept_line[i].set_description(self.list_concept_line[i].get_description())
+            self.list_concept_line[i].set_amount(self.list_concept_line[i].get_amount())
+            self.list_concept_line[i].set_total(self.list_concept_line[i].get_total())
+         
+            
+        Bill(name_client_bill, "", address_bill, population_bill, postal_code,
+             num_bill, date_day_bill, date_month_bill, date_year_bill, nif_bill,
+             self.list_concept_line, taxes_bill, way_to_pay_bill).generate_pdf()
 
             
 

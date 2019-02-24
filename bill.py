@@ -24,12 +24,21 @@ class Bill(object):
         self.elementos = elementos
         self.taxes = taxes
         self.way_to_pay = way_to_pay
-        self.total = 0
+        self.total = self.calcular_total()
 
+    def calcular_total(self):
+        total = 0
+        for i in range(0,35):
+            if self.elementos[i].get_total() != "":
+                total = total + float(self.elementos[i].get_total())
+        return total
+        
+
+    
     def generate_pdf(self):
 
         locale.setlocale(locale.LC_ALL, '')
-        c = canvas.Canvas("Factura.pdf", pagesize=A4)
+        c = canvas.Canvas("Factura_" + str(self.num_bill) + ".pdf", pagesize=A4)
         c.setLineWidth(.3)
         c.setFont('Helvetica', 9)
 
@@ -42,13 +51,30 @@ class Bill(object):
         c.drawRightString(360, 595, self.day + " de " + self.month + " de " + self.year)
         c.drawRightString(530, 595, self.cif)
 
+        altura = 550
+        anchura_cant = 0
+        for i in range(0,35):
+            c.drawCentredString(87, altura - i*12, self.elementos[i].get_cuantity())
+            #if len(self.elementos[i].get_description()) > 56:
+                
+            
+            c.drawString(130, altura - i*12, self.elementos[i].get_description())
+            c.drawRightString(473, altura - i*12, self.elementos[i].get_amount())
+            if self.elementos[i].get_total() != "":
+                c.drawRightString(533, altura - i*12, str(locale.format_string("%.2f", float(self.elementos[i].get_total()), grouping=True)))
+            else:
+                c.drawRightString(533, altura -i*12, self.elementos[i].get_total())
+                
+
+        c.drawRightString(185,75, str(locale.format_string("%.2f",
+                                                           float(self.total),grouping=True)))
         c.drawString(260, 75, str(self.taxes) + " %")
         c.drawRightString(360, 75, str(locale.format_string("%.2f",
-                                                            (self.total*self.taxes)/100,
+                                                            (float(self.total)*float(self.taxes))/100,
                                                             grouping = True)))
-
+        
         c.drawRightString(530, 75, str(locale.format_string("%.2f",
-                                                            self.total*(1 + self.taxes/100.),
+                                                            float(self.total)*(1 + float(self.taxes)/100.),
                                                             grouping = True)))
         c.drawRightString(360, 35, self.way_to_pay)
 
@@ -102,7 +128,7 @@ class Bill(object):
         x_list = [50,120, 420, 480, 542.2]
         y_list = [115, 565, 580]
         c.grid(x_list, y_list)
-        c.drawString(64, 569, "Cantidad")
+        c.drawString(65, 569, "Cantidad")
         c.drawString(250,569, "Concepto")
         c.drawString(435, 569, "Precio")
         c.drawString(493, 569, "Importe")

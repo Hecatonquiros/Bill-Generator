@@ -106,7 +106,7 @@ class App(object):
 
         self.canvas = Canvas(self.frame_description)
         frame = Frame(self.canvas)
-        myscrollbar=Scrollbar(self.root, orient="vertical", command=self.canvas.yview)
+        myscrollbar=Scrollbar(frame, orient="vertical", command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=myscrollbar.set)
         myscrollbar.pack(side="right", fill="y")
         self.canvas.pack(side="left")
@@ -123,7 +123,7 @@ class App(object):
         self.buton.pack(side=RIGHT)
 
     def myfunction(self,event):
-        self.canvas.configure(scrollregion=self.canvas.bbox("all"), width=1000, height=900)
+        self.canvas.configure(scrollregion=self.canvas.bbox("all"), width=1200, height=600)
 
     def create_receipt_widgets(self):
         self.label_num_receipt = Label(self.root, text="Recibo Numero")
